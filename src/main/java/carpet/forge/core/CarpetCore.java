@@ -15,6 +15,7 @@ import java.util.Map;
 @IFMLLoadingPlugin.TransformerExclusions("carpet.forge.core.CarpetCore")
 public class CarpetCore implements IFMLLoadingPlugin
 {
+	public static boolean CoreAvailable = false; 
     private static File minecraftDir;
     
     public CarpetCore() {
@@ -22,6 +23,8 @@ public class CarpetCore implements IFMLLoadingPlugin
     	
     	PrioritizeCarpet(); // Stefan0436: Prioritize carpet, but load sponge first if installed
     	MixinLoad(); // Stefan0436: Load mixins
+        
+        CoreAvailable = true; // Let the rest of the system know that the core mod is functioning
     	
     	// Stefan0436:
     	// Inspired by VanillaFIX, source: https://github.com/DimensionalDevelopment/VanillaFix/blob/51790666e0390204cd93e3543d75535564af51cf/src/main/java/org/dimdev/vanillafix/VanillaFixLoadingPlugin.java#L171

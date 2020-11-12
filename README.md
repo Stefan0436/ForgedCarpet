@@ -16,7 +16,7 @@ Powerful toolbox with ultimate control for technical mc.
 - **Second note: I am not part of the SciCraft server or their discord server, you cannot contact me from there.**
 - **Third note: I do not claim any of the code here, i only am trying to update it to minecraft forge 1.12.2-14.23.5.2854, make a few tweaks to minecraft and fix some compatibility issues with other mods.**
 
-## Compiling guide (not yet working, code needs to be ported):
+## Compiling guide (not yet working, working on it...):
 1. Clone the git repo.
 2. Change directory to the cloned repo.
 3. Run the following command depending on your os:
