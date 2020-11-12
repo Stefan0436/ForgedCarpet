@@ -404,6 +404,7 @@ cleanEclipse {
 // Task to clean all files, including eclipse
 task cleanAll (type: Delete) {
 	delete ".factorypath"
+	delete "Patches"
 }
 cleanAll.dependsOn cleanEclipse
 cleanAll.finalizedBy clean
