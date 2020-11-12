@@ -179,7 +179,7 @@ jar.finalizedBy('reobfJar')
 // Warn if the keyStore is not set
 jar {
 	doFirst {
-		if (!project.hasProperty('keyStore')) logger.warn "\n------------------------------------------------------------------------------------------\nWARNING: No fingerprint information provided, Forge will not be able to load the core mod!\n------------------------------------------------------------------------------------------\n"
+		if (!project.hasProperty('keyStore')) logger.warn "\n---------------------------------------------\nWARNING: No fingerprint information provided!\n---------------------------------------------\n"
 	}
 }
 

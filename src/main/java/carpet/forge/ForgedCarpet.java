@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(
@@ -56,6 +57,7 @@ public class ForgedCarpet
     @Mod.EventHandler
     public void onFingerprintViolation(FMLFingerprintViolationEvent event)
     {
+    	logger = LogManager.getLogger(Reference.MOD_ID);
         if (!event.isDirectory()) {
             logger.warn("*******************************************************************************************************");
             logger.warn("                                         WARNING!                                                      ");

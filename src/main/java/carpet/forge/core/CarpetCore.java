@@ -39,9 +39,9 @@ public class CarpetCore implements IFMLLoadingPlugin
         
     	// Stefan0436: I am confused, the carpet config file (in the config directory) looks like it is ignored...
         // The config file WAS used by the following mixins, but the if statements were disabled.
-        Mixins.addConfiguration("mixins.carpet.fastdust.json");
-        Mixins.addConfiguration("mixins.carpet.newlight.json");
-        
+        //Mixins.addConfiguration("mixins.carpet.fastdust.json");
+        //Mixins.addConfiguration("mixins.carpet.newlight.json");
+        //FIXME: Mixins for newlight and fastdust broken on newest 1.12.2 client, stragly enough, does work in development environment.
         try
         {
             Class.forName("com.mumfrey.liteloader.LiteMod");
