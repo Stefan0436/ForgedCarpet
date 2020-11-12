@@ -11,23 +11,25 @@ import java.io.File;
 import java.util.Map;
 
 @IFMLLoadingPlugin.MCVersion("@MCVER@")
-@IFMLLoadingPlugin.SortingIndex(-10000)
+@IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 1000)
 @IFMLLoadingPlugin.TransformerExclusions("carpet.forge.core.CarpetCore")
 public class CarpetCore implements IFMLLoadingPlugin
 {
     private static File minecraftDir;
     
-    public CarpetCore()
-    {
-    	
-        MixinBootstrap.init();
+    public CarpetCore() {
+    	PrioritizeCarpet(); // Give carpet priority in the classpath, but load sponge first if installed
+    	MixinLoad(); // Load mixins
+    }
+    
+    static void MixinLoad() {
+    	MixinBootstrap.init();
+    	CarpetConfig config = new CarpetConfig();
         
         Mixins.addConfiguration("mixins.forgedcarpet.json");
         Mixins.addConfiguration("mixins.carpet.logging.json");
         
-        CarpetConfig config = new CarpetConfig();
-        
-        if (config.getFastRedstoneDust())
+    	if (config.getFastRedstoneDust())
             Mixins.addConfiguration("mixins.carpet.fastdust.json");
         if (config.getNewLight())
             Mixins.addConfiguration("mixins.carpet.newlight.json");
@@ -40,8 +42,11 @@ public class CarpetCore implements IFMLLoadingPlugin
         catch (ClassNotFoundException e)
         {
             Mixins.addConfiguration("mixins.carpet.forge.json");
-        }
-        
+        }	
+    }
+    
+    static void PrioritizeCarpet() {
+    	
     }
     
     public static File getMinecraftDir()

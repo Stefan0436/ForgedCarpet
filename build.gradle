@@ -43,11 +43,11 @@ def FORGE="14.23.5.2854"
 def forgeversion="${MC_VER}-${FORGE}"
 
 def webpage = "https://github.com/Stefan0436/ForgedCarpet"                                       //
-def updateurl = "https://raw.githubusercontent.com/Stefan0436/ForgedCarpet/master/update.json"   // disable if merged
+def updateurl = "https://raw.githubusercontent.com/Stefan0436/ForgedCarpet/master/update.json"   // TODO: disable if merged
 def URL = "https://github.com/Stefan0436/ForgedCarpet"                                           //
 
 //def webpage = "https://minecraft.curseforge.com/projects/forgedcarpet"                         //
-//def updateurl = "https://raw.githubusercontent.com/DeadlyMC/ForgedCarpet/master/update.json"   // enable if merged
+//def updateurl = "https://raw.githubusercontent.com/DeadlyMC/ForgedCarpet/master/update.json"   // TODO: enable if merged
 //def URL = "https://github.com/DeadlyMC/ForgedCarpet"                                           //
 
 

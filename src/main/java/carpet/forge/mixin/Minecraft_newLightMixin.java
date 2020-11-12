@@ -21,7 +21,7 @@ public abstract class Minecraft_newLightMixin
     
     @Shadow
     @Final
-    public Profiler mcProfiler;
+    public Profiler profiler;
     
     @Inject(method = "runTick", at = @At(value = "INVOKE_STRING",
             target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V",
@@ -30,7 +30,7 @@ public abstract class Minecraft_newLightMixin
     {
         if (CarpetSettings.newLight)
         {
-            this.mcProfiler.endStartSection("lighting");
+            this.profiler.endStartSection("lighting");
             ((IWorld) this.world).getLightingEngine().procLightUpdates();
         }
     }

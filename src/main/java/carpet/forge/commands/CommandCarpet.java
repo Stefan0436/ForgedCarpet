@@ -132,26 +132,31 @@ public class CommandCarpet extends CommandCarpetBase
                 if ("default".equalsIgnoreCase(args[1]))
                 {
                     CarpetSettings.resetToUserDefaults(server);
+                    notifyCommandListener(sender, this, "Loaded rules from "+args[1]);
                     return;
                 }
                 if ("vanilla".equalsIgnoreCase(args[1]))
                 {
                     CarpetSettings.resetToVanilla();
+                    notifyCommandListener(sender, this, "Loaded rules from "+args[1]);
                     return;
                 }
                 if ("survival".equalsIgnoreCase(args[1]))
                 {
                     CarpetSettings.resetToSurvival();
+                    notifyCommandListener(sender, this, "Loaded rules from "+args[1]);
                     return;
                 }
                 if ("creative".equalsIgnoreCase(args[1]))
                 {
                     CarpetSettings.resetToCreative();
+                    notifyCommandListener(sender, this, "Loaded rules from "+args[1]);
                     return;
                 }
                 if ("bugfixes".equalsIgnoreCase(args[1]))
                 {
                     CarpetSettings.resetToBugFixes();
+                    notifyCommandListener(sender, this, "Loaded rules from "+args[1]);
                     return;
                 }
                 throw new WrongUsageException(getUsage(sender), new Object[0]);

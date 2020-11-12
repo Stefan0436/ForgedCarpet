@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+
 import org.apache.logging.log4j.Logger;
 
 @Mod(
@@ -23,7 +24,7 @@ public class ForgedCarpet
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-    
+    	
     }
     
     @Mod.EventHandler
