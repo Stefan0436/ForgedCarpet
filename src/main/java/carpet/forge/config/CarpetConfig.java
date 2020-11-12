@@ -20,10 +20,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
-//@Config(modid = Reference.MOD_ID)
+@Config(modid = Reference.MOD_ID)
 public class CarpetConfig
-{
-    
+{    
     @Config.Name("FastRedstoneDust")
     @Config.Comment("Lag optimizations for redstone Dust. By Theosib")
     @Config.RequiresMcRestart
@@ -67,6 +66,7 @@ public class CarpetConfig
         {
             throw new LoaderException(e);
         }
+        
         ReflectionHelper.setPrivateValue(Loader.class, Loader.instance(), configDir, "canonicalConfigDir");
         ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
     }

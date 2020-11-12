@@ -24,7 +24,7 @@ public class CommandLogHandler extends LogHandler
         String command = String.join(" ", this.command);
         for (Map.Entry<String, String> param : params.entrySet())
             command = command.replace("$" + param.getKey(), param.getValue());
-        player.server.commandManager.executeCommand(player, command);
+        player.getServer().commandManager.executeCommand(player, command); // Stefan0436: changed player.server to player.getServer()
     }
     
     private static Map<String, String> paramsToMap(Object[] commandParams)

@@ -1,25 +1,37 @@
 # eclipse
-bin
+bin/
+.git/
 *.launch
 .settings
 .metadata
 .classpath
 .project
 
+# Local keystores
+*.jks
+
+# Key information
+keyinfo.properties
+
 # idea
-out
+out/
 *.ipr
 *.iws
 *.iml
-.idea
+.idea/
 
 # gradle
-build
-.gradle
+build/
+.gradle/
+.factorypath
 
 # other
-eclipse
-run
-
-classes/
+eclipse/
+run/
 logs/
+
+# patching system
+Patches/
+
+# builders
+!builders/*

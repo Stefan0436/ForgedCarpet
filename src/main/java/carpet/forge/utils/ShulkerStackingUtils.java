@@ -25,13 +25,13 @@ public class ShulkerStackingUtils
                     changed = true;
                 }
                 
-                if (tag.isEmpty())
+                if (tag.hasNoTags()) // Stefan0436: Changed isEmpty to hasNoTags
                 {
                     nbt.removeTag("BlockEntityTag");
                 }
             }
             
-            if (nbt.isEmpty())
+            if (nbt.hasNoTags()) // Stefan0436: Changed isEmpty to hasNoTags
             {
                 stack.setTagCompound(null);
                 changed = true;

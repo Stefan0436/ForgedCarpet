@@ -1,9 +1,9 @@
 package carpet.forge.utils;
 
 import carpet.forge.CarpetSettings;
-import carpet.forge.mixin.ChunkProviderServerAccessor;
 import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.HashCommon;
+import carpet.forge.mixin.ChunkProviderServerAccessor;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.server.management.PlayerChunkMap;
@@ -84,18 +84,15 @@ public class UnloadOrder
         return rep;
     }
 
-
-
-
-
-    public static int getCurrentHashSize(WorldServer server)
+    @SuppressWarnings("unchecked")
+	public static int getCurrentHashSize(WorldServer server)
     {
         ChunkProviderServer chunkproviderserver = server.getChunkProvider();
         try
         {
-            Field field = ((ChunkProviderServerAccessor) chunkproviderserver).getDroppedChunks().getClass().getDeclaredField("map");
+        	Field field = ((ChunkProviderServerAccessor) chunkproviderserver).getDroppedChunks().getClass().getDeclaredField("map");
             field.setAccessible(true);
-            HashMap map = (HashMap<Object,Object>)field.get(((ChunkProviderServerAccessor) chunkproviderserver).getDroppedChunks());
+            HashMap<Object, Object> map = (HashMap<Object,Object>)field.get(((ChunkProviderServerAccessor) chunkproviderserver).getDroppedChunks());
             field = map.getClass().getDeclaredField("table");
             field.setAccessible(true);
             Object [] table = (Object [])field.get(map);
@@ -342,11 +339,10 @@ public class UnloadOrder
         }
         return rep;
     }
-
-
+    
     public static String stringify_chunk_id(ChunkProviderServer provider, int index, Long olong, int size)
     {
-        Chunk chunk = provider.loadedChunks.get(olong);
+        Chunk chunk = ((ChunkProviderServerAccessor) provider).getLoadedChunksC().get(olong); // Stefan0436: Replaced loadedChunks.get with new function
 
         return String.format(" - %4d: (%d, %d) at X %d, Z %d (order: %d / %d)",
                 index+1,
@@ -359,7 +355,7 @@ public class UnloadOrder
 
     public static String stringify_chunk_id_113(ChunkProviderServer provider, int index, Long olong, int size)
     {
-        Chunk chunk = provider.loadedChunks.get(olong);
+        Chunk chunk = ((ChunkProviderServerAccessor) provider).getLoadedChunksC().get(olong); // Stefan0436: Replaced loadedChunks.get with new function
 
         return String.format(" - %4d: (%d, %d) at X %d, Z %d (order: %d / %d)",
                 index+1,
@@ -386,7 +382,7 @@ public class UnloadOrder
         {
             if (!((ChunkProviderServerAccessor) provider).getDroppedChunks().isEmpty())
             {
-                Iterator<Long> iterator = ((ChunkProviderServerAccessor) provider).getDroppedChunks().iterator();
+                Iterator<Long> iterator = ((LongOpenHashSet)((ChunkProviderServerAccessor) provider).getLoadedChunksC()).iterator();
                 List<Long> chunks_ids_order = new ArrayList<>();
                 int selected_chunk = -1;
                 int iti = 0;
@@ -394,7 +390,7 @@ public class UnloadOrder
                 for (i = 0; iterator.hasNext(); iterator.remove())
                 {
                     Long olong = iterator.next();
-                    Chunk chunk = provider.loadedChunks.get(olong);
+                    Chunk chunk = ((ChunkProviderServerAccessor) provider).getLoadedChunksC().get(olong); // Stefan0436: Replaced loadedChunks.get with new function
 
                     if (chunk != null && chunk.unloadQueued)
                     {
@@ -501,8 +497,8 @@ public class UnloadOrder
                 {
 
                     Long olong = iterator.next();
-                    Chunk chunk = provider.loadedChunks.get(olong);
-                    ((ChunkProviderServerAccessor) provider).getDroppedChunks().remove(olong);
+                    Chunk chunk = ((ChunkProviderServerAccessor) provider).getLoadedChunksC().get(olong); // Stefan0436: Replaced loadedChunks.get with new function
+                    ((ChunkProviderServerAccessor) provider).getLoadedChunksC().remove(olong);
 
                     if (chunk != null && chunk.unloadQueued)
                     {

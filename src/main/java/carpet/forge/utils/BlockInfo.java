@@ -182,9 +182,9 @@ public class BlockInfo
         lst.add(Messenger.s(null, String.format(" - Light in: %d, above: %d", world.getLight(pos), world.getLight(pos.up()))));
         lst.add(Messenger.s(null, String.format(" - Brightness in: %.2f, above: %.2f", world.getLightBrightness(pos), world.getLightBrightness(pos.up()))));
         lst.add(Messenger.m(null, "w  - Is opaque: ", formatBoolean(material.isOpaque())));
-        lst.add(Messenger.s(null, String.format(" - Light opacity: %d", state.getLightOpacity())));
+        lst.add(Messenger.s(null, String.format(" - Light opacity: %d", state.getLightOpacity(world, pos))));
         lst.add(Messenger.m(null, "w  - Blocks light: ", formatBoolean(material.blocksLight())));
-        lst.add(Messenger.s(null, String.format(" - Emitted light: %d", state.getLightValue())));
+        lst.add(Messenger.s(null, String.format(" - Emitted light: %d", state.getLightValue(world,pos))));
         lst.add(Messenger.m(null, "w  - Picks neighbour light value: ", formatBoolean(state.useNeighborBrightness())));
         lst.add(Messenger.s(null, ""));
         lst.add(Messenger.m(null, "w  - Causes suffocation: ", formatBoolean(state.causesSuffocation())));
@@ -192,12 +192,12 @@ public class BlockInfo
         lst.add(Messenger.m(null, "w  - Can burn: ", formatBoolean(material.getCanBurn())));
         lst.add(Messenger.m(null, "w  - Requires a tool: ", formatBoolean(!material.isToolNotRequired())));
         lst.add(Messenger.s(null, String.format(" - Hardness: %.2f", state.getBlockHardness(world, pos))));
-        lst.add(Messenger.s(null, String.format(" - Blast resistance: %.2f", block.getExplosionResistance(null))));
+        lst.add(Messenger.s(null, String.format(" - Blast resistance: %.2f", block.getExplosionResistance(world, pos, null, null)))); // Stefan0436: Hope this is possible
         lst.add(Messenger.m(null, "w  - Ticks randomly: ", formatBoolean(block.getTickRandomly())));
         lst.add(Messenger.s(null, ""));
         lst.add(Messenger.m(null, "w  - Can provide power: ", formatBoolean(state.canProvidePower())));
         lst.add(Messenger.s(null, String.format(" - Strong power level: %d", world.getStrongPower(pos))));
-        lst.add(Messenger.s(null, String.format(" - Redstone power level: %d", world.getRedstonePowerFromNeighbors(pos))));
+        lst.add(Messenger.s(null, String.format(" - Redstone power level: %d", world.isBlockIndirectlyGettingPowered(pos)))); // Stefan0436: Changed getRedstonePowerFromNeighbors to isBlockIndirectlyGettingPowered 
         lst.add(Messenger.s(null, ""));
         lst.add(wander_chances(pos.up(), world));
         

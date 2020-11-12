@@ -1,12 +1,12 @@
 [
 {
-  "modid": "fc1122",
+  "modid": "@MODID@",
   "name": "ForgedCarpet",
   "description": "A Powerful Toolbox for Technical Minecraft",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "https://github.com/DeadlyMC/ForgedCarpet",
-  "updateUrl": "https://minecraft.curseforge.com/projects/forgedcarpet",
+  "version": "@VER@",
+  "mcversion": "forge:@FORGEVER@",
+  "url": "@WEBURL@",
+  "updateUrl": "@PAGE@",
   "authorList": ["DeadlyMC"],
   "credits": "",
   "logoFile": "",

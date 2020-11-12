@@ -9,9 +9,9 @@ public class BlockSaplingHelper
     // Added code for checking water for dead shrub rule
     public static boolean hasWater(World worldIn, BlockPos pos)
     {
-        for (BlockPos.MutableBlockPos blockpos$mutableblockpos : BlockPos.getAllInBoxMutable(pos.add(-4, -4, -4), pos.add(4, 1, 4)))
+        for (BlockPos.MutableBlockPos blockpos_mutableblockpos : BlockPos.getAllInBoxMutable(pos.add(-4, -4, -4), pos.add(4, 1, 4)))
         {
-            if (worldIn.getBlockState(blockpos$mutableblockpos).getMaterial() == Material.WATER)
+            if (worldIn.getBlockState(blockpos_mutableblockpos).getMaterial() == Material.WATER)
             {
                 return true;
             }

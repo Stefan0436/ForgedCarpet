@@ -1,14 +1,15 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
         maven { url = 'https://files.minecraftforge.net/maven' }
         maven { url = 'https://repo.spongepowered.org/maven' }
         maven { url = 'https://plugins.gradle.org/m2' }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
 
@@ -16,34 +17,124 @@ plugins {
     id 'java'
 }
 
+apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'java'
-apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'eclipse'
+apply plugin: 'org.spongepowered.mixin'
 
-version = "1.2.1"
+//Normal imports
+import groovy.swing.SwingBuilder
+import net.minecraftforge.gradle.common.task.SignJar
+import org.apache.tools.ant.filters.ReplaceTokens
+
+//GUI imports
+import java.awt.GraphicsEnvironment
+import java.awt.BorderLayout as BL
+import javax.swing.*
+import java.awt.*
+
+
+version = "1.2.2"
+def mixinversion="0.8.1"
+def minimal_mixinversion="0.7.10"
+def MC_VER="1.12.2"
+def FORGE="14.23.5.2854"
+def forgeversion="${MC_VER}-${FORGE}"
+
+def webpage = "https://github.com/Stefan0436/ForgedCarpet"                                       //
+def updateurl = "https://raw.githubusercontent.com/Stefan0436/ForgedCarpet/master/update.json"   // disable if merged
+def URL = "https://github.com/Stefan0436/ForgedCarpet"                                           //
+
+//def webpage = "https://minecraft.curseforge.com/projects/forgedcarpet"                         //
+//def updateurl = "https://raw.githubusercontent.com/DeadlyMC/ForgedCarpet/master/update.json"   // enable if merged
+//def URL = "https://github.com/DeadlyMC/ForgedCarpet"                                           //
+
+
 group = "carpet.forge" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "forgedcarpet"
 
+
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
-    sourceCompatibility = targetCompatibility = '1.8'
+	sourceCompatibility = targetCompatibility = '1.8' 
+}
+
+dependencies {
+    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
+    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
+    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
+    minecraft "net.minecraftforge:forge:${forgeversion}"
+    
+     // You may put jars on which you depend on in ./libs or you may define them like so..
+    // compile "some.group:artifact:version:classifier"
+    // compile "some.group:artifact:version"
+
+    // Real examples
+    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+
+    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
+    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // These dependencies get remapped to your current MCP mappings
+    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // For more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+    compile "org.spongepowered:mixin:${mixinversion}-SNAPSHOT"    
 }
 
 minecraft {
-    version = "1.12.2-14.23.5.2847"
-    runDir = "run"
-    coreMod = 'carpet.forge.core.CarpetCore'
+    //coreMod = 'carpet.forge.core.CarpetCore'
 
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
+    // The mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   Snapshot are built nightly.
+    // stable_#            Stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not always work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "stable_39"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    // Simply re-run your setup task after changing the mappings to update your workspace.
+    //mappings channel: 'snapshot', version: '20171003-1.12'    
+    mappings channel: 'snapshot', version: '20171003-1.12'
 
-    replace '@FINGERPRINT@', project.findProperty('signSHA1')
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+    
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            workingDirectory project.file('run/client')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+            
+            property 'fml.coreMods.load', 'carpet.forge.core.CarpetCore'            
+            property 'FORGE_FORCE_FRAME_RECALC', 'true'
+            
+            environment 'MC_VERSION', "${MC_VER}"
+        }
+
+        server {
+            workingDirectory project.file('run/server')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+            
+            property 'fml.coreMods.load', 'carpet.forge.core.CarpetCore'            
+            property 'FORGE_FORCE_FRAME_RECALC', 'true'
+            
+            environment 'MC_VERSION', "${MC_VER}"
+        }
+    }
 }
 
 jar.manifest.attributes(
@@ -56,31 +147,6 @@ jar.manifest.attributes(
 repositories {
     mavenCentral()
     maven { url = "http://repo.spongepowered.org/maven" }
-}
-
-dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
-    // except that these dependencies get remapped to your current MCP mappings
-    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
-    compile 'org.spongepowered:mixin:0.8.1-SNAPSHOT'
 }
 
 mixin {
@@ -97,32 +163,36 @@ build.dependsOn(shadowJar)
 
 reobf {
     shadowJar {
-        mappingType = 'SEARGE'
+        //mappingType = 'SEARGE'
         classpath = sourceSets.main.compileClasspath
     }
 }
 
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
-
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-
-        // replace version and mcversion
-        expand 'version': project.version, 'mcversion': project.minecraft.version
-    }
-
-    // copy everything else except the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
+task deobfJar(type: Jar, dependsOn: jar) {
+    from sourceSets.main.output
+    classifier "deobf"
 }
 
-task signJar(type: SignJar, dependsOn: reobfJar) {
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
 
+artifacts {
+    archives sourcesJar
+    archives deobfJar
+}
+
+jar.finalizedBy('reobfJar') 
+
+// Warn if the keyStore is not set
+jar {
+	doFirst {
+		if (!project.hasProperty('keyStore')) logger.warn "\n------------------------------------------------------------------------------------------\nWARNING: No fingerprint information provided, Forge will not be able to load the core mod!\n------------------------------------------------------------------------------------------\n"
+	}
+}
+
+task signJar(type: SignJar, dependsOn: jar) {
     // Skips if the keyStore property is missing.
     onlyIf {
         project.hasProperty('keyStore')
@@ -141,3 +211,229 @@ task signJar(type: SignJar, dependsOn: reobfJar) {
 
 // Runs this task automatically when build is ran.
 build.dependsOn signJar
+
+// Gradle task to load key information for signJar
+task loadKeyInfo {
+	onlyIf { return file("keyinfo.properties").exists() }
+	
+	doFirst {
+		def props = new Properties()
+		props.load(new FileReader(file("keyinfo.properties")))
+		
+		props.each { key, val -> 
+			project.ext.set(key, val)
+		}
+		
+		if (!project.hasProperty('keyStore')) throw new GradleException("Key information file 'keyinfo.properties' does not contain a keyStore variable, unable to continue.")  
+	}
+}
+signJar.dependsOn loadKeyInfo
+
+
+// Gradle task to create a local keystore
+task setupLocalKeystore {
+	doLast {
+		if (file("keyinfo.properties").exists() && !project.hasProperty('ignore')) {
+			throw new GradleException("A key information file already exists, if you want to proceed, add -Pignore to the command line arguments")
+			return
+		}
+		else if (file("keyinfo.properties").exists()) {
+			def props = new Properties()
+			props.load(new FileReader(file("keyinfo.properties")))
+			file("keyinfo.properties").delete()
+			file(props.keyStore).delete()
+		}
+		
+		println "Creating local keystore..."
+		def keystoreFileName = ""
+		def userAlias = ""
+		def keystorePassword = ""
+      	if (!GraphicsEnvironment.isHeadless()) {
+      		//TODO: Open GUI for user input
+			new SwingBuilder().edt {
+				frame(title: 'test', size: [500, 100], locationRelativeTo: null, show: true) {
+					borderLayout()
+					textlabel = label(text: 'test', constraints: BL.NORTH)
+				}
+			}
+			println "test"
+      	}
+      	else if (!project.hasProperty('keystoreFileName') || !project.hasProperty('userAlias') || !project.hasProperty('keystorePassword')) {
+      		println "\n\n\nUnable to get user input, grapical dialogs are not supported in your current execution environment,\nplease specify keystore configuration settings using command line arguments.\n\nRequired arguments:"      		
+      		println "-PkeystoreFileName=<keystore-name-without-spaces>.jks  -  Sets the local keystore name"
+      		println "-PuserAlias=<user-name-without-spaces>  -  Sets the user alias for the key signing"
+      		println "-PkeystorePassword=<password-for-local-keystore>  -  Sets the password of the local keystore"
+      		println "-PkeyPassword=<password-for-keys>  -  Sets the password for the keys generated by this project"
+      		println "\n"
+      		throw new GradleException("Failed to get user input")
+      		return
+      	}
+      	else {
+      		// TODO: Load variables from command line
+      	}
+      	
+      	// TODO: Create keystore
+	}
+} 
+
+// Copy the sources and change the tokens
+task generateSources(type: Sync) {
+	// if any of the variables change, this task will be redone.
+    inputs.property "MIXINVER", "${mixinversion}"
+    inputs.property "MIN_MIXINVER", "${minimal_mixinversion}"
+    inputs.property "MCVER", "${MC_VER}"
+    inputs.property "FORGE", "${FORGE}"
+    inputs.property "FORGEVER", "${forgeversion}"
+    inputs.property "FINGERPRINT", (project.hasProperty('signSHA1') ? project.findProperty('signSHA1') : "")
+    inputs.property "VER", project.version
+    inputs.property "MODID", project.archivesBaseName
+    inputs.property "URL", "${updateurl}".toString()
+    inputs.property "WEBURL", "${URL}".toString()
+    inputs.property "PAGE", "${webpage}".toString()
+	
+   	into "$buildDir/generated"
+   	   	
+   	from ("src/main") {   		
+   		filter(ReplaceTokens, tokens: [
+        	'MCVER': "${MC_VER}".toString(),
+        	'FORGE': "${FORGE}".toString(),
+        	'FORGEVER': "${forgeversion}".toString(),
+        	'VER': project.version,
+        	'FINGERPRINT': (project.hasProperty('signSHA1') ? project.findProperty('signSHA1') : ""),
+        	'MIXINVER': "${mixinversion}".toString(),
+        	'MIN_MIXINVER': "${minimal_mixinversion}".toString(),
+        	'MODID': project.archivesBaseName,
+        	'URL': "${updateurl}".toString(),
+        	'WEBURL': "${URL}".toString(),
+        	'PAGE': "${webpage}".toString()
+        ], beginToken: '@', endToken:'@')
+   	}
+}
+compileJava.dependsOn 'generateSources'
+
+
+// Workaround for eclipse tasks
+task setSourceToGen {
+	doFirst {
+		sourceSets {
+			main { 
+   				java { srcDirs = [ "$buildDir/generated/java" ] }
+   				resources { srcDirs = [ "$buildDir/generated/resources" ] }  
+			}
+		}
+	}
+}
+task setSourceToSrc {
+	doFirst {
+		sourceSets {
+			main { 
+   				java { srcDirs = [ "src/main/java" ] }
+   				resources { srcDirs = [ "src/main/resources" ] }  
+			}
+		}
+	}
+}
+setSourceToGen.outputs.upToDateWhen { false }
+setSourceToSrc.outputs.upToDateWhen { false }
+def tasksThatRunInSource = ['eclipseClasspath', 'eclipseProject', 'eclipseFactoryPath', 'eclipseJdt', 'eclipseJdtApt', 'eclipse']
+tasks.all { Task task ->
+    if (task.name != "setSourceToGen" && task.name != "setSourceToGen") {
+    	if (!tasksThatRunInSource.contains(task.name)) {
+    		task.dependsOn setSourceToGen
+   		}
+    	else {
+    		task.dependsOn setSourceToSrc
+    	}
+    }
+}
+
+
+// Workaround for eclipse runs, this copies the resources and the classes to bin
+task copyToBin(type: Sync, dependsOn: classes) {	
+	// Check if task is up to date
+    inputs.property "MIXINVER", "${mixinversion}"
+    inputs.property "MIN_MIXINVER", "${minimal_mixinversion}"
+    inputs.property "MCVER", "${MC_VER}"
+    inputs.property "FORGE", "${FORGE}"
+    inputs.property "FORGEVER", "${forgeversion}"
+    inputs.property "FINGERPRINT", (project.hasProperty('signSHA1') ? project.findProperty('signSHA1') : "")
+    inputs.property "VER", project.version
+    inputs.property "MODID", project.archivesBaseName
+    inputs.property "URL", "${updateurl}".toString()
+    inputs.property "WEBURL", "${URL}".toString()
+    inputs.property "PAGE", "${webpage}".toString()
+	
+	// Copy input/output
+   	from "$buildDir/resources/main"
+   	into "bin/main/resources"
+   	into "bin/default/resources"
+   	
+   	from "$buildDir/classes/java/main"
+   	into "bin/main"
+   	into "bin/default"
+}
+classes.finalizedBy('copyToBin')
+
+
+// Eclipse project and classpath generation tweaks
+eclipse {
+	project {
+		// Set project natures
+		natures.clear()
+		natures "org.eclipse.buildship.core.gradleprojectnature", "org.eclipse.jdt.core.javanature"
+		
+		// Clear old builders and add new gradle builder
+		buildCommands.clear()
+		buildCommand "LaunchConfigHandle": "<project>/builders/Gradle Builder.launch", "org.eclipse.ui.externaltools.ExternalToolBuilder"
+	}
+	
+	classpath {
+		file {
+			pathVariables 'GRADLE_HOME': file("${projectDir}")
+			
+			whenMerged { classpath ->
+        		classpath.getEntries().forEach { entry ->
+        			if (entry.getKind() == "src") {
+        				entry.output = null // make sure the entry won't get compiled by java and instead by gradle.
+        			}
+        		} 
+      		}
+		}
+	}
+}
+
+eclipseClasspath.dependsOn classes // Fix for eclipse file generation
+classes.dependsOn extractNatives // Make sure the natives are extracted on compile
+
+// Make the clean task remove the run and logs folder
+clean {
+	delete "run"
+	delete "logs"
+}
+
+// Make sure the cleanEclipse task removes the bin and settings folder (and the runs)
+cleanEclipse {
+	delete ".settings"
+	delete "bin"
+	delete fileTree("$projectDir") {
+		include '*.launch'
+	}
+}
+
+// Task to clean all files, including eclipse
+task cleanAll (type: Delete) {
+	delete ".factorypath"
+}
+cleanAll.dependsOn cleanEclipse
+cleanAll.finalizedBy clean
+
+// Copy the pre-configured jdt-apt config as a workaround to prevent a bug.
+task copyEclipseConfig {
+	onlyIf { return !file(".settings/org.eclipse.jdt.apt.core.prefs").exists() }
+    copy {
+        from "config presets"
+        into ".settings"
+        include "org.eclipse.jdt.apt.core.prefs"
+    }
+}
+eclipseClasspath.dependsOn copyEclipseConfig

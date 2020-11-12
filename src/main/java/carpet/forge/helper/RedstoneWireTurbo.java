@@ -192,7 +192,7 @@ public class RedstoneWireTurbo
     private static final int West = 3;
  
     // Names for debug print statements
-    private static final char dirname[] = {'N', 'E', 'S', 'W'};
+    private static final char dirname[] = {'N', 'E', 'S', 'W'}; // Stefan0436: according to eclipse, this variable is not used, but i'll leave it in anyway.
  
     /* 
      * These lookup tables completely remap neighbor positions into a left-to-right
@@ -559,9 +559,9 @@ public class RedstoneWireTurbo
         }
  
         final BlockPos pos = upd1.self;
-        final int x = pos.getX();
-        final int y = pos.getY();
-        final int z = pos.getZ();
+        final int x = pos.getX();  //
+        final int y = pos.getY();  // Stefan0436: Is this even used? i won't remove this code just in case.
+        final int z = pos.getZ();  //
  
         // Make sure there are enough layers in the list
         //while (updateLayers.size() <= layer+2) updateLayers.add(new ArrayList<UpdateNode>());
@@ -836,16 +836,13 @@ public class RedstoneWireTurbo
         IBlockState state = upd.currentState;
         final int i = ((Integer)state.getValue(BlockRedstoneWire.POWER)).intValue();
         int j = 0;
-        j = this.getMaxCurrentStrength(upd, j);
+        j = RedstoneWireTurbo.getMaxCurrentStrength(upd, j);
         int l = 0;
  
         ((IBlockRedstoneWire) wire).setCanProvidePower(false);
-        // Unfortunately, World.isBlockIndirectlyGettingPowered is complicated,
-        // and I'm not ready to try to replicate even more functionality from
-        // elsewhere in Minecraft into this accelerator.  So sadly, we must
-        // suffer the performance hit of this very expensive call.  If there
-        // is consistency to what this call returns, we may be able to cache it.
-        final int k = worldIn.getRedstonePowerFromNeighbors(upd.self);
+         
+        // Stefan0436: I decided to use isBlockIndirectlyGettingPowered, the syntax is now the same as isBlockIndirectlyGettingPowered was.
+        final int k = worldIn.isBlockIndirectlyGettingPowered(upd.self);
         ((IBlockRedstoneWire) wire).setCanProvidePower(true);
  
         // The variable 'k' holds the maximum redstone power value of any adjacent blocks.
@@ -874,18 +871,18 @@ public class RedstoneWireTurbo
                 // Get the max redstone power level of each of the cardinal
                 // neighbors
                 UpdateNode neighbor = upd.neighbor_nodes[n];
-                l = this.getMaxCurrentStrength(neighbor, l);
+                l = RedstoneWireTurbo.getMaxCurrentStrength(neighbor, l);
  
                 // Also check the positions above and below the cardinal
                 // neighbors
                 boolean neighbor_is_cube = neighbor.currentState.isNormalCube();
                 if (!neighbor_is_cube) {
                     UpdateNode neighbor_down = upd.neighbor_nodes[rs_neighbors_dn[m]];
-                    l = this.getMaxCurrentStrength(neighbor_down, l);
+                    l = RedstoneWireTurbo.getMaxCurrentStrength(neighbor_down, l);
                 } else
                 if (!center_up_is_cube) {
                     UpdateNode neighbor_up = upd.neighbor_nodes[rs_neighbors_up[m]];
-                    l = this.getMaxCurrentStrength(neighbor_up, l);
+                    l = RedstoneWireTurbo.getMaxCurrentStrength(neighbor_up, l);
                 }
             }
         }

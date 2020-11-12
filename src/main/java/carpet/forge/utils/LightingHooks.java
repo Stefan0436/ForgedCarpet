@@ -104,7 +104,7 @@ public class LightingHooks
                 {
                     for (int y = 0; y < 16; ++y)
                     {
-                        if (blockStorage.get(x, y, z).getLightValue() > 0)
+                        if (blockStorage.get(x, y, z).getLightValue(world, pos) > 0)
                         {
                             pos.setPos(xBase + x, (j << 4) + y, zBase + z);
                             world.checkLightFor(EnumSkyBlock.BLOCK, pos);
@@ -128,8 +128,8 @@ public class LightingHooks
                 
                 for (final EnumFacing dir : EnumFacing.HORIZONTALS)
                 {
-                    final int nX = x + dir.getXOffset();
-                    final int nZ = z + dir.getZOffset();
+                    final int nX = x + dir.getFrontOffsetX(); // Stefan0436: Changed getXOffset to getFrontOffsetX
+                    final int nZ = z + dir.getFrontOffsetZ(); // Stefan0436: Changed getZOffset to getFrontOffsetZ
                     
                     if (((nX | nZ) & CHUNK_COORD_OVERFLOW_MASK) != 0)
                         continue;
@@ -156,8 +156,8 @@ public class LightingHooks
         
         chunk.markDirty();
         
-        final int xOffset = nDir.getXOffset();
-        final int zOffset = nDir.getZOffset();
+        final int xOffset = nDir.getFrontOffsetX(); // Stefan0436: Changed getXOffset to getFrontOffsetX
+        final int zOffset = nDir.getFrontOffsetZ(); // Stefan0436: Changed getZOffset to getFrontOffsetZ
         
         final int xMin;
         final int zMin;
@@ -198,8 +198,8 @@ public class LightingHooks
                 
                 for (final EnumFacing dir : EnumFacing.HORIZONTALS)
                 {
-                    final int nX = x + dir.getXOffset();
-                    final int nZ = z + dir.getZOffset();
+                    final int nX = x + dir.getFrontOffsetX(); // Stefan0436: Changed getXOffset to getFrontOffsetX
+                    final int nZ = z + dir.getFrontOffsetZ(); // Stefan0436: Changed getZOffset to getFrontOffsetZ
                     
                     if (((nX | nZ) & CHUNK_COORD_OVERFLOW_MASK) != 0)
                         continue;
@@ -220,7 +220,7 @@ public class LightingHooks
         
         for (final EnumFacing dir : EnumFacing.HORIZONTALS)
         {
-            final Chunk nChunk = provider.getLoadedChunk(chunk.x + dir.getXOffset(), chunk.z + dir.getZOffset());
+            final Chunk nChunk = provider.getLoadedChunk(chunk.x + dir.getFrontOffsetX(), chunk.z + dir.getFrontOffsetZ()); // Stefan0436: Changed getXOffset and getZOffset to getFrontOffsetX and  getFrontOffsetZ
             
             if (nChunk == null)
                 continue;
@@ -308,8 +308,8 @@ public class LightingHooks
         {
             for (final EnumFacing dir : EnumFacing.HORIZONTALS)
             {
-                final int xOffset = dir.getXOffset();
-                final int zOffset = dir.getZOffset();
+                final int xOffset = dir.getFrontOffsetX(); // Stefan0436: Changed getXOffset to getFrontOffsetX
+                final int zOffset = dir.getFrontOffsetX(); // Stefan0436: Changed getZOffset to getFrontOffsetZ
                 
                 final boolean neighborColumnExists = (((x + xOffset) | (z + zOffset)) & 16) == 0 //Checks whether the position is at the specified border (the 16 bit is set for both 15+1 and 0-1)
                                                              || world.getChunkProvider().getLoadedChunk(chunk.x + xOffset, chunk.z + zOffset) != null;
@@ -370,7 +370,7 @@ public class LightingHooks
     
     private static int getFlagIndex(final EnumSkyBlock lightType, final EnumFacing dir, final AxisDirection axisDirection, final EnumBoundaryFacing boundaryFacing)
     {
-        return getFlagIndex(lightType, dir.getXOffset(), dir.getZOffset(), axisDirection, boundaryFacing);
+        return getFlagIndex(lightType, dir.getFrontOffsetX(), dir.getFrontOffsetZ(), axisDirection, boundaryFacing); // Stefan0436: Changed getXOffset and getZOffset to getFrontOffsetX and  getFrontOffsetZ
     }
     
     private static AxisDirection getAxisDirection(final EnumFacing dir, final int x, final int z)
@@ -382,8 +382,8 @@ public class LightingHooks
     {
         for (final EnumFacing dir : EnumFacing.HORIZONTALS)
         {
-            final int xOffset = dir.getXOffset();
-            final int zOffset = dir.getZOffset();
+            final int xOffset = dir.getFrontOffsetX(); // Stefan0436: Changed getXOffset to getFrontOffsetX
+            final int zOffset = dir.getFrontOffsetZ(); // Stefan0436: Changed getZOffset to getFrontOffsetZ
             
             final Chunk nChunk = world.getChunkProvider().getLoadedChunk(chunk.x + xOffset, chunk.z + zOffset);
             

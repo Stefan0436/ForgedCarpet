@@ -1,0 +1,20 @@
+Todo:
+Task to generate local keystore and fingerprint information
+Task to connect with a keystore and save the information (use prompts for passwords)
+Automatically set SHA1 fingerprint variable after signJar
+Add the keystore setup to the compiling guide
+Find new versions of coreMod and mappingType (shadowjar)
+Test mod in new 1.12
+Fix bugs caused by port
+Fix as many warnings as i can
+Script to generate patch diff's (by using the versions of the mod, or by using commit ids)
+
+VERY IMPORTANT: Test BlockInfo
+Test all commands
+Command output (success, information, etc)
+
+Make my own tweaks
+
+Later: port to 1.13.x (v1.3.0 - 1.13, far future, first tweak the mod even more)
+Later: port to 1.14.x (v1.4.0 - 1.14, far future, first tweak the mod even more)
+Later: port to 1.16.x (v1.5.0 - 1.16, far future, first tweak the mod even more)

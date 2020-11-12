@@ -2,6 +2,7 @@ package carpet.forge.core;
 
 import carpet.forge.config.CarpetConfig;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.Mixins;
 
@@ -9,7 +10,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Map;
 
-@IFMLLoadingPlugin.MCVersion("1.12.2")
+@IFMLLoadingPlugin.MCVersion("@MCVER@")
 @IFMLLoadingPlugin.SortingIndex(-10000)
 @IFMLLoadingPlugin.TransformerExclusions("carpet.forge.core.CarpetCore")
 public class CarpetCore implements IFMLLoadingPlugin
@@ -18,7 +19,7 @@ public class CarpetCore implements IFMLLoadingPlugin
     
     public CarpetCore()
     {
-        
+    	
         MixinBootstrap.init();
         
         Mixins.addConfiguration("mixins.forgedcarpet.json");
@@ -26,9 +27,9 @@ public class CarpetCore implements IFMLLoadingPlugin
         
         CarpetConfig config = new CarpetConfig();
         
-        //if (config.getFastRedstoneDust())
+        if (config.getFastRedstoneDust())
             Mixins.addConfiguration("mixins.carpet.fastdust.json");
-        //if (config.getNewLight())
+        if (config.getNewLight())
             Mixins.addConfiguration("mixins.carpet.newlight.json");
         
         try

@@ -85,7 +85,7 @@ public abstract class BlockRedstoneWire_fastdustMixin extends Block
         int l = 0;
         
         this.canProvidePower = false;
-        int k = worldIn.getRedstonePowerFromNeighbors(pos1);
+        int k = worldIn.isBlockIndirectlyGettingPowered(pos1); // Stefan0436: changed getRedstonePowerFromNeighbors to isBlockIndirectlyGettingPowered
         this.canProvidePower = true;
         
         // The variable 'k' holds the maximum redstone power value of any adjacent blocks.

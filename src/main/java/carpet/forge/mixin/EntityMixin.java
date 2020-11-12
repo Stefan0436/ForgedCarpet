@@ -20,7 +20,8 @@ public abstract class EntityMixin
     {
         if (BlockRotator.flippinEligibility((Entity)(Object)this))
         {
-            cir.setReturnValue(EnumFacing.byHorizontalIndex(MathHelper.floor((double)(this.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3).getOpposite());
+        	// Stefan0436: changed byHorizontalIndex to getHorizontal
+            cir.setReturnValue(EnumFacing.getHorizontal(MathHelper.floor((double)(this.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3).getOpposite());
         }
     }
 }
