@@ -18,21 +18,27 @@ public class CarpetCore implements IFMLLoadingPlugin
     private static File minecraftDir;
     
     public CarpetCore() {
-    	PrioritizeCarpet(); // Give carpet priority in the classpath, but load sponge first if installed
-    	MixinLoad(); // Load mixins
+    	// Stefan0436: Cleaned methods, added prioritize function for making carpet load first (sponge will load before carpet if it is installed)
+    	
+    	PrioritizeCarpet(); // Stefan0436: Prioritize carpet, but load sponge first if installed
+    	MixinLoad(); // Stefan0436: Load mixins
+    	
+    	// Stefan0436:
+    	// Inspired by VanillaFIX, source: https://github.com/DimensionalDevelopment/VanillaFix/blob/51790666e0390204cd93e3543d75535564af51cf/src/main/java/org/dimdev/vanillafix/VanillaFixLoadingPlugin.java#L171
+    	// Note: PrioritizeCarpet was inspired by VanillaFIX, the here code is my own (and parts of the original ForgedCarpet project)
     }
     
-    static void MixinLoad() {
+    static void MixinLoad() { // Stefan0436: Mixin loading function, all code for mixin is here
     	MixinBootstrap.init();
-    	CarpetConfig config = new CarpetConfig();
         
         Mixins.addConfiguration("mixins.forgedcarpet.json");
         Mixins.addConfiguration("mixins.carpet.logging.json");
         
-    	if (config.getFastRedstoneDust())
-            Mixins.addConfiguration("mixins.carpet.fastdust.json");
-        if (config.getNewLight())
-            Mixins.addConfiguration("mixins.carpet.newlight.json");
+    	// Stefan0436: I am confused, the carpet config file (in the config directory) looks like it is ignored...
+        // The config file WAS used by the following mixins, but the if statements were disabled.
+        // 
+        Mixins.addConfiguration("mixins.carpet.fastdust.json");
+        Mixins.addConfiguration("mixins.carpet.newlight.json");
         
         try
         {
@@ -42,11 +48,11 @@ public class CarpetCore implements IFMLLoadingPlugin
         catch (ClassNotFoundException e)
         {
             Mixins.addConfiguration("mixins.carpet.forge.json");
-        }	
+        }
     }
     
-    static void PrioritizeCarpet() {
-    	
+    static void PrioritizeCarpet() { // Stefan0436: Give carpet (or sponge) priority in the classpath
+    	//TODO
     }
     
     public static File getMinecraftDir()

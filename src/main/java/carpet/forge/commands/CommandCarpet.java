@@ -173,6 +173,9 @@ public class CommandCarpet extends CommandCarpetBase
                 list_settings(sender, String.format("CarpetMod Settings matching \"%s\"", tag),CarpetSettings.findAll(tag)) ;
                 return;
             }
+
+            //TODO: saveConfig
+            //TODO: loadConfig
             if ("setDefault".equalsIgnoreCase(args[0]))
             {
                 if (args.length != 3)
@@ -307,6 +310,8 @@ public class CommandCarpet extends CommandCarpetBase
                     lst.add(rule);
                 }
             }
+            lst.add("saveConfig");
+            lst.add("loadConfig");
             lst.add("setDefault");
             lst.add("removeDefault");
             if (tag == null)

@@ -1,4 +1,8 @@
 Todo:
+Command for loading config file (while in-game)
+Command for saving to config file (while in-game)
+Fix CarpetConfig to override CarpetSettings (it just does not work)
+
 Fix sponge support
 Fix other mod incompatibilities
 Classpath prioritizing (inspired by VanillaFIX, own code however)

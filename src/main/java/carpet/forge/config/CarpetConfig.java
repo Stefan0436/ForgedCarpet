@@ -20,6 +20,17 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
+//
+// FIXME:
+// Stefan0436: 
+// It looks like the carpet config in forge gets ignored,
+// i noticed ASM overrides but they don't get applied to the CarpetSettings class...
+// (i removed the loading config loading code from the core mod after i saw that it did not work)
+// 
+// When i fix this, also add the rest of the settings (through reflection),
+// also check if restart is actually required, find a way to do this better.
+//
+
 @Config(modid = Reference.MOD_ID)
 public class CarpetConfig
 {    

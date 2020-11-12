@@ -23,17 +23,8 @@ apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'eclipse'
 apply plugin: 'org.spongepowered.mixin'
 
-//Normal imports
-import groovy.swing.SwingBuilder
 import net.minecraftforge.gradle.common.task.SignJar
 import org.apache.tools.ant.filters.ReplaceTokens
-
-//GUI imports
-import java.awt.GraphicsEnvironment
-import java.awt.BorderLayout as BL
-import javax.swing.*
-import java.awt.*
-
 
 version = "1.2.2"
 def mixinversion="0.8.1"
@@ -248,17 +239,7 @@ task setupLocalKeystore {
 		def keystoreFileName = ""
 		def userAlias = ""
 		def keystorePassword = ""
-      	if (!GraphicsEnvironment.isHeadless()) {
-      		//TODO: Open GUI for user input
-			new SwingBuilder().edt {
-				frame(title: 'test', size: [500, 100], locationRelativeTo: null, show: true) {
-					borderLayout()
-					textlabel = label(text: 'test', constraints: BL.NORTH)
-				}
-			}
-			println "test"
-      	}
-      	else if (!project.hasProperty('keystoreFileName') || !project.hasProperty('userAlias') || !project.hasProperty('keystorePassword')) {
+      	if (!project.hasProperty('keystoreFileName') || !project.hasProperty('userAlias') || !project.hasProperty('keystorePassword')) {
       		println "\n\n\nUnable to get user input, grapical dialogs are not supported in your current execution environment,\nplease specify keystore configuration settings using command line arguments.\n\nRequired arguments:"      		
       		println "-PkeystoreFileName=<keystore-name-without-spaces>.jks  -  Sets the local keystore name"
       		println "-PuserAlias=<user-name-without-spaces>  -  Sets the user alias for the key signing"
