@@ -1,4 +1,7 @@
 Todo:
+Fix sponge support
+Fix other mod incompatibilities
+Classpath prioritizing (inspired by VanillaFIX, own code however)
 Task to generate local keystore and fingerprint information
 Task to connect with a keystore and save the information (use prompts for passwords)
 Automatically set SHA1 fingerprint variable after signJar
@@ -11,7 +14,7 @@ Script to generate patch diff's (by using the versions of the mod, or by using c
 
 VERY IMPORTANT: Test BlockInfo
 Test all commands
-Command output (success, information, etc)
+Command output status (success, information, etc)
 
 Make my own tweaks
 
