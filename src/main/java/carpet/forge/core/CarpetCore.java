@@ -1,6 +1,5 @@
 package carpet.forge.core;
 
-import carpet.forge.config.CarpetConfig;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
 import org.spongepowered.asm.launch.MixinBootstrap;
@@ -28,7 +27,7 @@ public class CarpetCore implements IFMLLoadingPlugin
     	
     	// Stefan0436:
     	// Inspired by VanillaFIX, source: https://github.com/DimensionalDevelopment/VanillaFix/blob/51790666e0390204cd93e3543d75535564af51cf/src/main/java/org/dimdev/vanillafix/VanillaFixLoadingPlugin.java#L171
-    	// Note: PrioritizeCarpet was inspired by VanillaFIX, the here code is my own (and parts of the original ForgedCarpet project)
+    	// Note: PrioritizeCarpet was inspired by VanillaFIX, the here code is my own (parts of the original ForgedCarpet project are owned by DeadlyMC)
     }
     
     static void MixinLoad() { // Stefan0436: Mixin loading function, all code for mixin is here
