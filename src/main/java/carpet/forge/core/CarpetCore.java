@@ -40,7 +40,8 @@ public class CarpetCore implements IFMLLoadingPlugin
         // The config file WAS used by the following mixins, but the if statements were disabled.
         //Mixins.addConfiguration("mixins.carpet.fastdust.json");
         //Mixins.addConfiguration("mixins.carpet.newlight.json");
-        //FIXME: Mixins for newlight and fastdust broken on newest 1.12.2 client, stragly enough, does work in development environment.
+        //FIXME: Mixins for newlight and fastdust broken on newest 1.12.2 client, strangely enough, the mixins do work in the development environment, don't know why
+        
         try
         {
             Class.forName("com.mumfrey.liteloader.LiteMod");
