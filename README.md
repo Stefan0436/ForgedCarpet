@@ -24,7 +24,7 @@ Powerful toolbox with ultimate control for technical mc.
 - Linux: `./gradlew genEclipseRuns build eclipse` (remember to mark gradlew as executable: chmod ug=rwx gradlew)
 4. the jar will be saved in the build/libs folder.
 
-## Development Environment Setup Guide (This is for Eclipse, i recommend you to use version 2019-09, because i could not get the project loaded on the version 2020‑09)
+## Development Environment Setup Guide (This is for Eclipse-JEE)
 - Skip to step 4 if you already compiled the jar before.
 1. Clone the repo.
 2. Change directory to the cloned repo.
@@ -32,7 +32,7 @@ Powerful toolbox with ultimate control for technical mc.
 - Windows: `./gradlew.bat genEclipseRuns eclipse`
 - Linux: `./gradlew genEclipseRuns eclipse` (remember to mark gradlew as executable: chmod ug=rwx gradlew)
 4. Create a new workspace (in a different folder than the mod folder)
-5. If you have the welcome page open, click 'Workbench' in the top right corner.
+5. If you have the welcome page open, click 'Workbench' or 'Hide' in the top right corner.
 6. Press the keys: ALT+F
 7. Click Import
 8. Open the category 'Gradle' and select 'Existing Gradle Project'
